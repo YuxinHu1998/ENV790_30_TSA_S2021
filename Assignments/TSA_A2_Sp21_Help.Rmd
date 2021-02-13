@@ -21,16 +21,24 @@ R packages needed for this assignment:"forecast","tseries", and "dplyr". Install
 
 ```{r}
 #Load/install required package here
-
+#install.packages("xlsx")
+library(xlsx)
 ```
 
 
 ## Data set information  
 
-Consider the data provided in the spreadsheet "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx" on our **Data** folder. The data comes from the US Energy Information and Administration and corresponds to the January 2021 Monthly Energy Review. The spreadsheet is ready to be used. Use the command $read.table()$ to import the data in R or $panda.read\_excel()$ in Python (note that you will need to import pandas package). }
+Consider the data provided in the spreadsheet "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx" on our **Data** folder. The data comes from the US Energy Information and Administration and corresponds to the January 2021 Monthly Energy Review. The spreadsheet is ready to be used. Modified: You may use the command $read.xlsx()$ from package *xlsx* to import the data in R. You will need to install the package if you haven't done it yet. Since this is a excel file, you need to specify which sheet to import. Here I am doing it with argument *sheetIndex=1*. You could also use *sheetName="Monthly Data"*. Since after the header you have a row with units, I am skipping the header on the first read.xlsx command. And then I call the function again just to get row 11 which has the column names. Keep in mind that there are other way to import this file. You could save it as *.csv* and then use the *read.table()* or *read.csv()*, but I wanted to share a way to read it as it is.
 
 ```{r}
-#Importing data set
+#Importing data set without change the original file using read.xlsx
+energy_data <- read.xlsx(file="../Data/Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx",header=FALSE,startRow = 13,sheetIndex=1) #startRow is equivalent to skip on read.table
+
+#Now let's extract teh column names from row 11
+read_col_names <- read.xlsx(file="../Data/Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx",header=FALSE,startRow = 11,endRow=11,sheetIndex=1)
+
+colnames(energy_data) <- read_col_names
+head(energy_data)
 
 ```
 
